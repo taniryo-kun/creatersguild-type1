@@ -1,0 +1,159 @@
+// Place all the styles related to the user controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "variables";
+@import "mixins";
+#users_show{
+	.user_pr{
+		color: #{$complement};
+		width: 60%;
+	}
+
+	#editinfo_user_button{
+		position:relative;
+		top:-10px;
+		right:0px;
+		z-index:5;
+		margin-bottom: 5px;
+		display: inline-block;
+		height:16px;
+		padding:5px 10px;
+		border:solid 1px black;
+		background-color: #{$primary};
+		border-radius:16px;
+		color:white;
+	}
+	#editinfo_user_button a{
+		text-decoration: none;
+	}
+	#editinfo_user_button a:visited{
+		color:white;
+	}
+
+	#userprofile_user_wrapper{
+		position:relative;
+		top:-10px;
+		left:0px;
+		//background-color: #{$primary};
+		//border:2px dashed rgba(255,255,255,1.0);
+		//margin:5px;
+		padding:3px;
+		//height:90px;
+		img{
+			position:absolute;
+			height:90px;
+			width:90px;
+			bottom:-20px;
+			right:3px;
+			align:"right";
+		}
+	}
+	#worklist_work_wrapper{
+		position:relative;
+		.workpanel_work_wrapper{
+			position: relative;
+			width: 100%;
+	    //@include prefixed_value(display, box);
+	    @include prefixed_property(box-sizing, border-box);
+	    padding: 18px 22px;
+			//background-color: transparent;
+			//margin-bottom: 5px;
+			.workpanel_work_image{
+	      width: 40%;
+	      float: left;
+			  >a{
+			    display: block;
+			    >img{
+			      width: 100%;
+	          vertical-align: middle;
+	        }
+			  }
+			}
+			.workpanel_work_title{
+	      @include prefixed_property(box-sizing, border-box);
+			  width: 60%;
+	      float: left;
+	      padding-top: 5px;
+
+	      //@include prefixed_property(box-flex, 4);
+				//background-color:transparent;
+				//border-left:8px solid #{$complement};
+				a{
+				  text-decoration: none;
+				  font-weight: bold;
+				  display: block;
+					color: #{$complement};
+	        line-height:1.8;
+				}
+				a:visited{
+					color: #{$complement};
+				}
+				>span{
+				  display: block;
+				  line-height: 1.6;
+				  &.pr{
+				    overflow-y: hidden;
+				  }
+				  &.date{
+				    text-align: right;
+				  }
+				}
+			}
+			div.clear{
+			  clear: both;
+			}
+	    /*パネル全体をリンク化するためのa*/
+	    >a.workpanel_work_link{
+	      display: block;
+	      position:absolute;
+	      text-decoration: none;
+	      top:0px;
+	      left: 0px;
+	      width:100%;
+	      height:100%;
+	      //background:transparent;
+	      border-style: solid;
+	      border-width: 18px 24px;
+	      z-index: 1;
+	      color: transparent;
+	      @include prefixed_property(box-sizing, border-box);
+	      //@include prefixed_property(border-image, image-url("/image_border_4_3/white/01.png") 60 80 stretch);
+	      //@include prefixed_property(border-image-slice, 60 80);
+	      //@include prefixed_property(border-image-repeat, stretch);
+	    }
+	    @for $i from 1 through 8 {
+	      >a.workpanel_work_link.type_0#{$i}{
+	        @include prefixed_property(border-image, image-url("/image_border_4_3/white/0#{$i}.png") 60 80 stretch);
+	      }
+	    }
+		}
+	}
+	#worklist_work_wrapper{
+		.workpanel_work_wrapper:nth-child(even){
+			.workpanel_work_image{
+	      float: right;
+			}
+			.workpanel_work_title{
+	      float: right;
+			}
+		}
+	}
+	#toollist_tool_wrapper{
+		position:relative;
+		top:0px;
+		left:0px;
+		background-color: transparent;
+		border:1px dashed rgba(120,120,120,1.0);
+		margin:5px;
+		padding:3px;
+	}
+	#knowlist_know_wrapper{
+		position:relative;
+		top:0px;
+		left:0px;
+		background-color: transparent;
+		border:1px dashed rgba(120,120,120,1.0);
+		margin:5px;
+		padding:3px;
+	}
+}

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  section: MyString
+  title: MyString
+  ref_work: MyString
+  product_url: MyString
+  category: MyString
+
+two:
+  section: MyString
+  title: MyString
+  ref_work: MyString
+  product_url: MyString
+  category: MyString

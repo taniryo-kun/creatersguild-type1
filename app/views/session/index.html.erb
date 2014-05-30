@@ -1,0 +1,20 @@
+<h1>ログインページ</h1>
+<% if notice %>
+<div id="notice"><%= flash[:notice] %></div>
+<% end %>
+<h1>Log in</h1>
+<%= form_tag :session_index do %>
+<div class="field">  
+	<%= label_tag :name, 'userID(名前)：' %>
+ 	<%= text_field_tag :name, params[:name] %>
+</div>
+<div class="field">
+	<%= label_tag :pass, 'パスワード：' %>
+ 	<%= password_field_tag :pass , params[:pass]%>
+</div>
+	<!-- リダイレクト先のURL -->
+	<%= hidden_field_tag :redirect_pass, request.env.values_at("HTTP_REFERER") %>
+<div class="actions">
+	<%= submit_tag "ログイン" %>
+</div>
+<% end %>

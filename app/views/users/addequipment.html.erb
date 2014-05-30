@@ -1,0 +1,83 @@
+<!-- users/addequipment.html -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">ツール　参考文献　登録</h1>
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<title>制作日記 ツール 参考文献 登録</title>
+<% end %>
+
+<% if @user && current_user %>
+	<% if @user.id == current_user.id %>
+		ツール登録フォーム
+		<%= form_for (@tool) do |f| %>
+			<div id="addequipment">
+				<div class="tool">
+					<%= f.label "種類：" %>
+					<%= f.select :section, [["ハードウエア", "hare_ware"], ["ソフトウエア", "soft_ware"]], :prompt => "選択してください" %><br>
+					<%= f.label "ツールカテゴリ：" %>
+					<%= f.text_field :category %><br>
+					<%= f.label "ツール名称：" %>
+					<%= f.text_field :title %><br>
+					<%= f.label "ショップリンク：" %>
+					<%= f.text_field :product_url %><br>
+					<%= f.label "ツール画像："%><br>
+					<div id="trimmer"></div>
+					<%= f.fields_for :tool_image do |g| %>
+						<%= g.file_field :image %><br>
+						<%= g.hidden_field :image_cache %>
+					<% end %>
+					<%= hidden_field_tag :redirectURL, @redirectURL %>
+					<%= f.submit %>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+<% end %>
+<br>
+お気に入りツール一覧<br>
+<% @owntools.each do |owntool| %>
+	<%= link_to owntool.title, :controller=>"tools",:action=>"show", :redirectURL=> @redirectURL %>、
+<% end %>
+<br><br>
+<% if @user && current_user %>
+	<% if @user.id == current_user.id %>
+		参考文献登録フォーム
+		<%= form_for (@knowledge) do |f| %>
+			<div id="addequipment">
+				<div class="knowledge">
+					<%= f.label "種類：" %>
+					<%= f.select :section, [["書籍", "book"], ["ウェブサイト", "web"]], :prompt => "選択してください" %><br>
+					<%= f.label "文献カテゴリ：" %>
+					<%= f.text_field :category %><br>
+					<%= f.label "文献名称：" %>
+					<%= f.text_field :title %><br>
+					<%= f.label "ショップリンク：" %>
+					<%= f.text_field :product_url %><br>
+					<%= f.label "参考作品：" %>
+					<%= f.text_field :ref_work %><br>
+					<%= f.label "文献画像："%><br>
+					<div id="trimmer"></div>
+					<%= f.fields_for :knowledge_image do |g| %>
+						<%= g.file_field :image %><br>
+						<%= g.hidden_field :image_cache %>
+					<% end %>
+					<%= hidden_field_tag :redirectURL, @redirectURL %>
+					<%= f.submit %>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+<% end %>
+<br>
+お気に入り文献一覧<br>
+<% @ownknowledges.each do |ownknowledge| %>
+	<%= link_to ownknowledge.title, :controller=>"knowledges",:action=>"show", :redirectURL=> @redirectURL %>、
+<% end %>
+<br><br>
+<% if @redirectURL %>
+	<%= link_to "TOPページに戻る", "/" %><br>
+<% else %>
+	<%= link_to"ユーザマイページに戻る", user_path %><br>
+<% end %>
+<%= flash[:notice] %>

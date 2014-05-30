@@ -1,0 +1,35 @@
+<!-- Knowledges#show -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">参考文献　表示</h1>
+<!-- Find me in app/views/knowledges/show.html.erb -->
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<% if @knowledge.title %>
+		<title>制作日記 <%= @knowledge.title %> 参考文献 表示</title>
+	<% else %>
+		制作日記　参考文献　表示
+	<% end %>
+<% end %>
+
+ツール情報表示フォーム
+<%= form_for (@knowledge) do |f| %>
+	<div id = "knowledge"
+		<%= f.label "：種類" %>
+		<%= @knowledge.section %><br>
+		<%= f.label "文献カテゴリ：" %>
+		<%= @knowledge.category %><br>
+		<%= f.label "文献名称：" %>
+		<%= @knowledge.title %><br>
+		<%= f.label "ショップリンク：" %>
+		<%= @knowledge.product_url %><br>
+		<%= f.label "参考作品" %>
+		<%= @knowledge.ref_work %><br>
+		<%= f.label "文献画像" %>
+		<%= image_tag(@knowledge.knowledge_img) %>
+	</div>
+<% end %>
+<br><br>
+<%= button_to("文献情報修正", edit_knowledge_path, :method => :get) %>
+<%= button_to("文献情報削除", knowledge_path, :method => :delete, :confirm => "削除してよろしいですか？") %>
+<%= link_to("TOPページへ戻る", "/") %>

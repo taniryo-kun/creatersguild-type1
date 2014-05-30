@@ -1,0 +1,156 @@
+<!-- works#show -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">作品　表示</h1>
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+  <% if @work.title %>
+    <title>制作日記 <%= @work.title %> 作品　表示</title>
+  <% else %>
+    制作日記　作品　表示
+  <% end %>
+<% end %>
+
+<div id="title_box" class="padding_both_side">
+  <%= image_tag "border_h_fill_bottom/" + sprintf('%02d', rand(20) + 1) + ".png", :class => "border bottom" %>
+  <div id="category">
+    <span class="smallword">[<%= @work.category.category_name %>]</span>
+  </div>
+  <div id="title" class="ellipsis">
+    <%= @work.title %>
+  </div>
+  <!-- 作品のステータス -->
+  <div id="stamps">
+    <% if @work.status == "making" %>
+      <%= image_tag "stamps/stamp_working.png", :size => "80x80"%>
+    <% else %>
+      <%= image_tag "stamps/stamp_finish.png", :size => "80x80"%>
+    <% end %>
+  </div>
+</div>
+<div class="user_icon_sets">
+  <div class="left_column">
+    <%= render(:partial => 'shared/user_icon/small', :locals => {:user => @work.user}) %>
+  </div>
+
+  <div class="right_column">
+    <div class="user_name_box">
+      <%= link_to @work.user.name, @work.user %>
+    </div>
+    <p id="pr" class="ellipsis multiline expandable" onclick=""><!--
+      --><%= @work.work_pr %><!--
+    --></p>
+    <hr class="hand_drawing">
+    <div id="date">
+      <span class="smallword">Since: <%= @work.created_at.strftime('%y-%m-%d %H:%M') %></span>
+    </div>
+  </div>
+</div>
+<%= flash[:notice] %>
+
+<!-- 欲しいボタン -->
+<div id="want_button_wrapper2"><!-- 内容物を右寄せするための箱 -->
+<div id="want_button_wrapper">
+  <%= link_to "欲しい", {:controller=>"works",:action=>"add_want_point"}, :method => "PUT",:remote=>true , :class=>"want_button", :html => {:'data-type' => 'json'} %>
+  <div id="want_point"><%= @work.want_point ||= 0 %></div>
+</div>
+</div>
+
+<h1 class="band_h padding_both_side">
+  工程一覧
+</h1>
+<div id="workstages">
+<% @ws.each do |stage| %>
+  <div class="workstage">
+    <%= image_tag "image_border_work/t" + sprintf('%02d', rand(5) + 1) + ".gif", :class => "border top" %>
+    <div class="title_box">
+      <div class="ellipsis padding_both_side">
+        <%= stage.stage_num %>. <%= stage.stage_title if stage.stage_title? %>
+      </div>
+    </div>
+    <div class="ellipsis multiline expandable pr padding_both_side"><!--
+    --><%= stage.stage_pr if stage.stage_pr? %><!--
+    --></div>
+    <% if stage.after_image != nil %>
+      <div class="stage_image_viewer x_scroll">
+        <%= link_to render(:partial => 'shared/image_4x3/large', :locals => {:src => stage.start_image.image_url, :outer_color => "gray", :class_name => "stage_image"}), url_for([@work,stage]), :class => "start_image_link" %>
+        <%= image_tag("right_arrow_2.png") %>
+        <%= link_to render(:partial => 'shared/image_4x3/large', :locals => {:src => stage.after_image.image_url, :outer_color => "gray", :class_name => "stage_image"}), url_for([@work,stage]), :class => "after_image_link" %>
+      </div>
+    <% else %>
+      <% if stage.start_image != nil %>
+      <div class="stage_image_viewer">
+        <%= link_to render(:partial => 'shared/image_4x3/large', :locals => {:src => stage.start_image.image_url, :outer_color => "gray", :class_name => "stage_image"}), url_for([@work,stage]), :class => "start_image_link" %>
+      </div>
+      <% end %>
+    <% end %>
+    <%= image_tag "image_border_work/b" + sprintf('%02d', rand(5) + 1) + ".gif", :class => "border bottom" %>
+  </div>
+  <div class="arrow_box">
+    <%= image_tag "bottom_arrow_2.png", :class => "arrow" %>
+  </div>
+<% end %>
+  <% if current_user %>
+    <!-- 次工程を作成するためのリンク -->
+    <div class="center_box">
+      <%= link_to image_tag("plus.png")+"New One!", new_work_workstage_url([@work]), :class => "common_button half_width large_font" if @work.user.id == current_user.id %>
+    </div>
+  <% end %>
+</div>
+
+<!-- 以下材料情報 -->
+<h1 class="band_h padding_both_side">
+  材料・ツール・参考文献
+</h1>
+<% if @work.workmaterials %>
+  <ul class="item_list">
+    <li class="headline">材料</li>
+    <% @work.workmaterials.each do |wkm| %>
+      <li>
+        <div class="text_left"><%= link_to (wkm.material), controller: 'workmaterials', work_id: @work.id, action: 'show', id: wkm.id, redirectURL: "/works/"+"#{@work.id}" if wkm.material? %></div>
+        <div class="text_right"><%= wkm.amount if wkm.amount? %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+    <% if current_user %>
+      <!-- 材料追加用リンク -->
+      <li>
+        <%= link_to "+", {controller: 'workmaterials', work_id: @work.id, action: 'new', redirectURL: "/works/"+"#{@work.id}"}, {:id => "additem"} if @work.user.id == current_user.id %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<% if @work.tools %>
+  <ul class="item_list">
+    <li class="headline">道具</li>
+    <% @work.tools.each do |tool| %>
+      <li>
+        <div class="text_left"><%= link_to (tool.title), controller: 'tools', action: 'show', id: tool.id %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<% if @work.knowledges %>
+  <ul class="item_list">
+    <li class="headline">参考文献</li>
+    <% @work.knowledges.each do |knowledge| %>
+      <li>
+        <div class="text_left"><%= link_to (knowledge.title), controller: 'knowledges', action: 'show', id: knowledge.id %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<br><br>
+<span class=""><%= link_to "TOPへ戻る", :root %></span>
+<% if current_user %>
+	<% if current_user == @work.user %>
+		<span class=""><%= link_to "作品削除", wildwork_work_path(@work), :method => "put", :confirm => "本当に削除しますか？" %></span>
+	<% end %>
+<% end %>
+<%if current_user%>
+  <%if current_user.id == @work.user.id %>
+    <span class=""><%= link_to "作品情報編集",edit_work_path(@work) %></span><br>
+  <%end%>
+<%end%>

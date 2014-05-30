@@ -1,0 +1,187 @@
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">作品工程　表示</h1>
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+  <% if @stage.stage_title %>
+    <title>制作日記 <%= @stage.stage_title %> 作品工程 表示</title>
+  <% else %>
+    制作日記　作品工程　表示
+  <% end %>
+<% end %>
+
+<div id="title_box" class="padding_both_side">
+  <%= image_tag "border_h_fill_bottom/" + sprintf('%02d', rand(20) + 1) + ".png", :class => "border bottom" %>
+  <div id="category">
+    <span class="smallword">stage <%= @stage.stage_num %></span>
+  </div>
+  <div id="title" class="ellipsis">
+    <%= @stage.stage_title if @stage.stage_title? %>
+  </div>
+  <!-- ページ説明 -->
+  <div id="stamps">
+    <%= image_tag "stamps/stamp_ws.png", :size => "80x80"%>
+  </div>
+</div>
+<div class="user_icon_sets above_bordered">
+  <div class="left_column">
+    <%= render(:partial => 'shared/user_icon/small', :locals => {:user => @work.user}) %>
+  </div>
+
+  <div class="right_column">
+    <div class="user_name_box">
+      <%= link_to @work.user.name, @work.user %>
+    </div>
+    <p id="pr" class="ellipsis multiline expandable" onclick=""><!--
+      --><%= @stage.stage_pr %><!--
+    --></p>
+    <hr class="hand_drawing">
+    <div id="date">
+      <span class="smallword">Since: <%= @work.created_at.strftime('%y-%m-%d %H:%M') %></span>
+    </div>
+  </div>
+</div>
+<!-- 欲しいボタン -->
+<div id="want_button_wrapper2"><!-- 内容物を右寄せするための箱 -->
+<div id="want_button_wrapper">
+  <%= link_to "欲しい", {:controller=>"works",:action=>"add_want_point",:id=>@stage.work.id},:method => "PUT",:remote=>true , :class=>"want_button", :html => {:'data-type' => 'json'} %>
+  <div id="want_point"><%= @stage.work.want_point ||= 0 %></div>
+</div>
+</div>
+<div class="padding_both_side">
+  <div id="view" class="bordered_box <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+  	<div id="img_box">
+  		<%= image_tag @stage.start_image.image_url if @stage.start_image %>
+  	</div>
+  </div>
+</div>
+<div class="above_bordered">
+  <% if current_user %>
+    <% if current_user.id == @work.user_id.to_i %>
+      <%= button_to "工程情報修正", {:action => "edit"}, :method => :get %>
+      <%= button_to "工程終了画像登録", { :action => "afterimage" }, :method => :get %>
+    <% end %>
+  <% end %>
+</div>
+
+<h1 id="comments_title" class="band_h padding_both_side">コメント</h1>
+
+<%= link_to "コメント全件表示", "javascript:void(0);", :'id' => 'all_comments'%>
+
+<div id="commentform" class="padding_both_side">
+  <%= form_for [@work,@stage,@comment], :html => {:'data-type' => 'json'}, :remote => true do |f| %>
+  <%= f.label "コメント入力フォーム"%><br>
+  <!--
+  <%= f.radio_button :comment_status,"regular",{:checked => true}%>
+  <%= f.label :regular, "通常"%>
+  <%= f.radio_button :comment_status,"question",{:checked => false}%>
+  <%= f.label :question, "質問"%>
+  <%= f.radio_button :comment_status,"suggestion",{:checked => false}%>
+  <%= f.label :suggestion, "提案"%>
+  -->
+  <div class="inputs_wrap">
+    <div>
+      <div class="icon comment_status_base <%= serial_string(prefix: "type_", from: 1, to: 10, digit: 2) %>" select="regular">
+        <%= f.select :comment_status, {"通常" => "regular", "質問" => "question", "提案" => "suggestion"}, {}, {:onchange => "$(this).parent().attr('select',$(this).children('option:selected').val());"} %>
+      </div>
+    </div>
+    <div class="comment_comment_base">
+      <%= f.text_area :comment, :size => "40*6", :maxlength => "140", :placeholder => "コメントを入力してください" %>
+    </div>
+  </div>
+  <div class="button_wrap">
+    <%= link_to_function "Post!", "$('#new_comment').submit()", {:class => "common_button flex_width"} %>
+  </div>
+  <% end %>
+</div>
+
+<div id="comments"><!-- id変更不可 -->
+	<%= render(:partial => 'shared/comment', :collection => @comments) %>
+</div>
+<div id="more_button_box">
+<%= link_to image_tag("plus.png") + 'Show More!', "javascript:void(0);", :'id' => 'more_button', :class => "common_button half_width large_font above_bordered"%>
+</div>
+<div class="padding_both_side">
+  <span class="after_image bordered_image <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+    <%= image_tag @stage.after_image.image_url if @stage.after_image %>
+  </span>
+</div>
+<h1 class="band_h padding_both_side above_bordered">
+  使用アイテム
+</h1>
+<% if @stage.workmaterials %>
+  <ul class="item_list">
+    <li class="headline">材料</li>
+    <% @stage.workmaterials.each do |wkm| %>
+      <li>
+        <div class="text_left"><%= link_to (wkm.material), controller: 'workmaterials', work_id: @work.id, action: 'show', id: wkm.id, redirectURL: "/works/"+"#{@work.id}" if wkm.material? %></div>
+        <div class="text_right"><%= wkm.amount if wkm.amount? %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<% if @stage.tools %>
+  <ul class="item_list">
+    <li class="headline">道具</li>
+    <% @stage.tools.each do |tool| %>
+      <li>
+        <div class="text_left"><%= link_to (tool.title), controller: 'tools', action: 'show', id: tool.id %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<% if @stage.knowledges %>
+  <ul class="item_list">
+    <li class="headline">参考文献</li>
+    <% @stage.knowledges.each do |knowledge| %>
+      <li>
+        <div class="text_left"><%= link_to (knowledge.title), controller: 'knowledges', action: 'show', id: knowledge.id %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<%= link_to "TOPに戻る", :root %>
+<%= link_to "作品に戻る", work_path(@stage.work_id) %>
+
+<!-- javascriptから初期ロード時に取得したコメントを参照するために必須 -->
+<script type="text/javascript">
+	comments = new Comments(<%== @comments.to_json %>);
+	comments.has_next = <%== @has_next %>;
+	
+	points = <%== @stage.points.to_json %>;
+</script>
+
+<div id="popup_wrap" style="display:none;">
+  <div id="popup">
+    <div id="commentFormWithPoint" class="new_comment">
+      <p class="above_bordered">コメント入力フォーム</p>
+      <div class="image_wrap bordered_box <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+        <div class="content">
+          <%= image_tag @stage.start_image.image_url if @stage.start_image %>
+          <div class="marker invert">
+          </div>
+        </div>
+      </div>
+      <div class="inputs_wrap above_bordered">
+        <div class="icon comment_status_base <%= serial_string(prefix: "type_", from: 1, to: 10, digit: 2) %>" select="regular">
+          <select onchange="$(this).parent().attr('select',$(this).children('option:selected').val());">
+            <option value="regular">通常</option>
+            <option value="question">質問</option>
+            <option value="suggestion">提案</option>
+          </select>
+        </div>
+        <div class="comment_comment_base">
+          <textarea placeholder="コメントを入力してください"></textarea>
+        </div>
+      </div>
+      <div class="button_wrap">
+        <input type="button" value="コメントを投稿する" id="cppost">
+        <input type="button" value="キャンセル" id="cpcancel">
+      </div>
+    </div>
+  </div>
+</div>
+

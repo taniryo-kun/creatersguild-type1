@@ -1,0 +1,126 @@
+<!-- user#show.html.erb -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">ユーザー　表示</h1>
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+  <% if @user.name %>
+    <title>制作日記 <%= @user.name %> 表示</title>
+  <% else %>
+    制作日記　ユーザー　表示
+  <% end %>
+  
+<% end %><div id="title_box" class="padding_both_side">
+  <%= image_tag "border_h_fill_bottom/" + sprintf('%02d', rand(20) + 1) + ".png", :class => "border bottom" %>
+  <div id="category">
+  	<% if current_user %>
+  		<span class="smallword">[ユーザマイページ]</span>
+  	<% else %>
+    	<span class="smallword">[ユーザーページ]</span>
+    <% end %>
+  </div>
+  <div id="title" class="ellipsis">
+    <%= @user.name %>の工房
+  </div>
+  <!-- ページ説明 -->
+  <div id="stamps">
+  	<% if current_user %>
+    	<%= image_tag "stamps/stamp_mypage.png", :size => "80x80"%>
+    <% else %>
+    	<%= image_tag "stamps/stamp_userpage.png", :size => "80x80"%>
+    <% end %>
+  </div>
+</div>
+<!-- ユーザ情報部 -->
+<div id="userprofile_user_wrapper">
+	<div class = "">
+		<%= image_tag @user.usericon.image_url if @user.usericon %><br>
+		<!--<%= @user.name %><br>-->
+		<div class = "user_pr">
+			<%= @user.pr_msg %><br>
+		</div>
+		<div class = "user_email">
+      連絡先e-mail :<%= @user.email %><br>
+    </div>
+		<!-- @user.cpoint %><br> -->
+    <div class = "user_url">
+		  サイトURL :<%= @user.creaters_url %><br>
+    </div>
+	</div>
+</div>
+
+<% if current_user == @user %>
+  <!-- ユーザ情報を編集する為のボタン -->
+  <div id="editinfo_user_button">
+    <%= link_to "edit",edit_user_path(@user.id) if params[:id].to_i == current_user.id %>
+  </div>
+<% end %>
+<!-- ユーザ所有作品一覧 -->
+<h1 class="band_h padding_both_side">
+  ユーザーの作品
+</h1>
+<div id="worklist_work_wrapper">
+	<% @user.works.each do |work| %>
+		<div class="workpanel_work_wrapper bordered_box <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+			<!-- パネル全体をリンク化するためのdiv -->
+			<div class="workpanel_work_image">
+        <% if work.workstages.first %>
+			  <% startimg = work.workstages.order("created_at DESC").first.start_image %>
+			  <%= link_to image_tag(startimg.image_url),work if startimg %>
+        <% else %>
+          NO IMAGE
+        <% end %>
+		  </div>
+		  <div class="workpanel_work_title padding_both_side">
+				<%= link_to work.title, work, {:class => "ellipsis"} %>
+				<span class="small_font pr ellipsis multiline"><%= work.work_pr %></span>
+				<span class="small_font date">since: <%= work.start_date %></span>
+			</div>
+			<%= link_to "　", work, {:class => "workpanel_work_link " + "type_" + sprintf('%02d', rand(8) + 1)}%>
+			<div class="clear"></div>
+		</div>
+	<% end %>
+</div>
+<!-- 以下材料情報 -->
+<h1 class="band_h padding_both_side">
+  所有ツール・参考文献
+</h1>
+<% if @user.tools %>
+  <ul class="item_list">
+    <li class="headline">道具</li>
+    <% @user.tools.each do |tool| %>
+      <li>
+        <div class="text_left"><%= link_to (tool.title), controller: 'tools', action: 'show', id: tool.id,
+        redirectURL: 'http://creatersguild/works/index' %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+    <% if current_user %>
+      <% if params[:id].to_i == current_user.id %>
+        <li>
+          <%= link_to "+", {controller: "users", id: @user.id, action: "addequipment", anchor: "tools"}, {:id => "additem"}%>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+<% if @user.knowledges %>
+  <ul class="item_list">
+    <li class="headline">参考文献</li>
+    <% @user.knowledges.each do |knowledge| %>
+      <li>
+        <div class="text_left"><%= link_to (knowledge.title), controller: 'knowledges', action: 'show', id: knowledge.id %></div>
+        <div class="clear"></div>
+      </li>
+    <% end %>
+    <% if current_user %>
+      <% if params[:id].to_i == current_user.id %>
+        <li>
+          <%= link_to "+", {controller: "users", id: @user.id, action: "addequipment", anchor: "knowledges"}, {:id => "additem"}%>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= link_to "TOPへ戻る", :root %>

@@ -1,0 +1,272 @@
+// Place all the styles related to the workstages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "variables";
+@import "mixins";
+
+#workstages_show{
+  .smallword{
+    font-size: small;
+  }
+  #pr{
+    max-height: 70px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  #date{
+    margin-top: 5px;
+    text-align: right;
+  }
+
+  #comments_title{
+    &.about_point{
+      &:before{
+        content: "選択マーカーに対する";
+        white-space: nowrap;
+      }
+    }
+  }
+  /*
+   * コメント表示部分
+   */
+  .comment{
+    margin-bottom: 10px;
+    .right_column{
+      position: relative;
+      .user_name_box{
+        margin-bottom: 5px;
+      }
+      .status, .on_image{
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        height: 1.4em;
+        font-weight: bold;
+        font-size: x-small;
+        color: white;
+        padding-left: 0.2em;
+        padding-right: 0.2em;
+        margin-left: 0.5em;
+        background-color: #{$primary};
+        &:before{
+          content: "";
+          display: block;
+          position: absolute;
+          top:0%;
+          right: 100%;
+          border-style: solid;
+          border-width: 0.7em 0.5em 0.7em 0em;
+          border-color:transparent;
+          border-right-color: #{$primary};
+        }
+        &[question]{
+          background-color: #{$secondary_b};
+          &:before{
+            border-right-color: #{$secondary_b};
+          }
+        }
+        &[suggestion]{
+          background-color: #{$complement};
+          &:before{
+            border-right-color: #{$complement};
+          }
+        }
+      }
+      .date{
+        margin-top: 5px;
+        text-align: right;
+      }
+      .body{
+        max-height: 70px;
+        margin-bottom: 5px;
+      }
+      .image_wrap{
+        //初期状態では非表示
+        margin-bottom: 5px;
+        display: none;
+        position: relative;
+        &:before{
+          content: "";
+          display: block;
+          padding-top: 75%;
+        }
+        .content{
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          right: 0px;
+          bottom: 0px;
+          overflow: hidden;
+          img{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+          }
+          .marker{
+            width: 30%;
+          }
+        }
+      }
+      /*
+       * raight_columnにshow_detailというクラスがあれば…
+       */
+      &.show_detail{
+        //画像プレビュー表示
+        .image_wrap{
+          display: block;
+        }
+        //折り畳みテキスト展開
+        .expand{
+          display: block;
+        }
+        .expandable{
+          display: none;
+        }
+      }
+    }
+  }
+  
+  #more_button_box{
+    text-align: center;
+    #more_button{
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  /*
+   * #view, ポイント付きコメントの画像プレビュー, 新規ポイント投稿時のポイント追加位置プレビュー用のマーカー
+   */
+  .marker{
+    position: absolute;
+    border: none;
+    border-radius: 50% 50% 50% 50%;
+    @include prefixed_property(transform, translate(-50%,-50%));
+    background: rgba(0%, 0%, 100%, 0.25);
+    
+    &:after{
+      content: "";
+      display: block;
+      padding-top: 100%;
+    }
+    
+    &.selected{
+      background: rgba(100%, 0%, 0%, 0.25);
+    }
+    
+    &.invert{
+      background: rgba(0%, 0%, 0%, 0);
+      box-shadow: 0px 0px 0px 988px rgba(0%, 0%, 0%, 0.5);
+    }
+  }
+  
+  /*
+   * workstage_point用
+   */
+  #view{
+    position:relative;
+    width:100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    &:before{
+      content: "";
+      display: block;
+      padding-top: 75%;
+    }
+    >#img_box{
+      position:absolute;
+      top:0px;
+      left:0px;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      >img{
+        position:absolute;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+        vertical-align: text-bottom;
+      }
+    }
+  }
+  
+  /*
+   * コメント投稿フォーム用
+   */
+  .new_comment{
+    .inputs_wrap{
+      width: 100%;
+      @include prefixed_value(display, box);
+      .comment_status_base{
+        width: 60px;
+        background-position: left top;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        &[select=regular]{
+          background-color: #{$complement};
+          background-image: url("/assets/comment_status/regular.png");
+        }
+        &[select=question]{
+          background-color: #{$secondary_b};
+          background-image: url("/assets/comment_status/question.png");
+        }
+        &[select=suggestion]{
+          background-color: #{$primary};
+          background-image: url("/assets/comment_status/suggestion.png");
+        }
+        select{
+          opacity: 0;
+          z-index: 100;
+        }
+      }
+      .comment_comment_base{
+        @include prefixed_property(box-flex, 1);
+        padding-left: 10px;
+        textarea{
+          width: 100%;
+          height: 60px;
+          border: none;
+        }
+      }
+    }
+    .button_wrap{
+      text-align: right;
+    }
+  }
+  
+  /*
+   * ポップアップ内
+   */
+  #commentFormWithPoint{
+    .image_wrap{
+      position: relative;
+      &:before{
+        content: "";
+        display: block;
+        padding-top: 75%;
+      }
+      .content{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        overflow: hidden;
+        img{
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 100%;
+        }
+        .marker{
+          width: 30%;
+        }
+      }
+    }
+  }
+
+}
+#ws_new_bg{
+  background-color:white;
+}

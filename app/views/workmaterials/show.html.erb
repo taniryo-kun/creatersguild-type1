@@ -1,0 +1,29 @@
+<!-- Workmaterials#show -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">材料　表示</h1>
+<!-- Find me in app/views/workmaterials/show.html.erb -->
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<% if @wkmate.material %>
+		<title>制作日記 <%= @wkmate.material %> 材料 表示</title>
+	<% else %>
+		制作日記　材料　表示
+	<% end %>
+<% end %>
+
+材料登録フォーム
+<%= form_for([@work,@wkmate]) do |f| %>
+	<%= f.label "材料：" %>
+	<%= @wkmate.material %><br>
+	<%= f.label "数量：" %>
+	<%= @wkmate.amount %><br>
+<% end %>
+<br><br>
+<% if current_user %>
+	<% if @work.user.id == current_user.id %>
+		<%= link_to "材料情報修正", controller: "workmaterials", work_id: @work.id, id: @wkmate.id, action: "edit", redirectURL: @redirectURL %>
+	<% end %>
+<% end %>
+
+<%= link_to("TOPページへ戻る", "/") %>

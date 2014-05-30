@@ -1,0 +1,23 @@
+<% if @workstage.errors %>
+	<% @workstage.errors.each do |attribute, message| %>
+		<% if message.is_a?(String) %>
+			<span style="color:red"><%= message %></span><br>
+		<% end %>
+	<% end %>
+<% end %>
+<%= form_for([@work,@workstage]) do |f| %>
+  <%= f.label "工程のタイトル：" %><br>
+  <%= f.text_field :stage_title %><br>
+	<%= f.label "工程画像："%><br>
+  <div id="trimmer"></div>
+  <%= image_tag @workstage.start_image.image_url, :size => "120x90" if @workstage.start_image %>
+  <%= f.fields_for :start_image do |g| %>
+    <%= g.hidden_field :image %><br>
+    <%= g.hidden_field :image_cache %>
+  <% end %>
+	<%= f.label "今の状況を説明して下さい：" %><br>
+	<%= f.text_area :stage_pr %><br>
+	<%= f.hidden_field :work_id %>
+	<%= f.hidden_field :stage_num %>
+	<%= f.submit "create stage" %>
+<% end %>

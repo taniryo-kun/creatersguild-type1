@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  workmaterial_id: 1
+  workstage_id: 1
+
+two:
+  workmaterial_id: 1
+  workstage_id: 1

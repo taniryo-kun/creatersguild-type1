@@ -1,0 +1,52 @@
+
+<script>
+	//ios5以下がアクセスしてきたときはアラードする
+      if(window.navigator.platform == "iPhone")
+      	if(window.navigator.userAgent.search("Version/5") != -1)
+          alert("ios 5以下では作品へのコメントのみ可能です。");
+</script>
+
+<!-- user#new.html.erb -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">ユーザー　登録</h1>
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<title>制作日記 ユーザー　登録</title>
+<% end %>
+
+<%= form_for @user do |f| %>
+  <% if @user.errors.any?%>
+    <div class="error_messages">
+      <h2><%= pluralize(@user.errors.count, "error") %> exitsting.</h2>
+      <ul>
+        <% for message in @user.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<%= f.label "名前(userID)："%><br>
+	<%= f.text_field :name %><br>
+	<%= f.label "パスワード："%><br>
+	<%= f.password_field :password %><br>
+	<%= f.label "パスワード(確認)："%><br>
+	<%= f.password_field :password_confirmation %><br>
+	<%= f.label "アドレス："%><br>
+	<%= f.text_field :email %><br>
+	<%= f.label "サイト(URL)："%><br>
+	<%= f.text_field :creaters_url %><br>
+	<div id="trimmer"></div>
+	<%= f.fields_for :usericon do |uicon| %>
+		<%= uicon.label "アイコン画像："%><br>
+		<% if @user.usericon.image? %>
+			<%= image_tag @user.usericon.image, :size=> "80x80" %>
+		<% end %>
+		<%= uicon.file_field :image %><br>
+		<%= uicon.hidden_field :image_cache %>
+	<% end %>
+	<%= f.label "自己紹介："%><br>
+	<%= f.text_area :pr_msg %>
+	<%= f.hidden_field :cpoint %>
+	<%= f.submit %>
+<% end %>

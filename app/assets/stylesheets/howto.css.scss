@@ -1,0 +1,155 @@
+@import "variables";
+@import "mixins";
+@import "functions";
+.next_button{
+	position:relative;
+	width:100%;
+	height:70px;
+	border-bottom:1px solid rgba(120,120,120,0.8);
+	line-height: 70px;
+	text-align: center;
+	font-size: 30px;
+	color: #{$primary};
+	&:after{
+		position:absolute;
+		top:25px;
+		right:10px;
+		content:">";
+		border-radius: 50%;
+		height:25px;
+		width:25px;
+		font-size: 20px;
+		text-align: center;
+		line-height: 25px;
+		background-color: rgba(220,220,220,1.0);
+	}
+}
+#howto_select_btns{
+	position: relative;
+	top:-50px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 13px;
+	text-align: center;
+	.common_button{
+		padding:5px 25px 5px 25px;
+		margin: 0 auto;
+		font-size: x-large;
+	}
+	#howto_btn1{
+		margin-bottom: 20px;
+	}
+}
+
+.howto_title{
+	width:100%;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	background:transparent;
+	text-align: center;
+	line-height: 60px;
+}
+.howto_slide_pic{
+	height:270px;
+	padding-top: 2px;
+	overflow: hidden;
+	text-align: center;
+	img.example{
+		vertical-align: bottom;
+	}
+	img.picture{
+		z-index:0;
+	}
+}
+.howto_slide_explanation{
+	position:relative;
+	top:-20px;
+	height:102px;
+	width:90%;
+	margin: 0 auto;
+	font-size:13px;
+	p{
+		margin:0;
+		line-height:20px;
+		padding-left:20px;
+	}
+}
+.slide2{
+	top:-45px;
+}
+.slide4{
+	top:-40px;
+}
+.slide{
+	position:relative;
+	top:0px;
+	left:0;
+	/*background-color:green;*/
+	font-size: large;
+}
+.sub_title{
+	display: block;
+	text-decoration: underline;
+	font-size: 15px;
+	font-weight: bold;
+}
+.service_name{
+	font-size: 15px;
+	color: #{$primary};
+}
+.howto_highlight{
+	font-size: 15px;
+	color: #{$primary};
+}
+.howto_highlight_small{
+	font-size: 14px;
+	color: #{$primary};
+}
+.com_outer_box1_1{
+	position:absolute;
+	left:10%;
+	top:10%;
+	width:30%;
+	z-index:10;
+	.com_content{
+		position:absolute;
+		left:25%;
+		top:30%;
+		z-index:30;
+		font-size:10px;
+	}
+	img.com_flame{
+		position:absolute;
+		width:80%;
+		z-index:20;
+	}
+}
+
+.com_outer_box1_2{
+	position:absolute;
+	left:10%;
+	top:10%;
+	width:50%;
+	z-index:10;
+	.com_content{
+		position:absolute;
+		left:25%;
+		top:30%;
+		z-index:30;
+		font-size:10px;
+	}
+	img.com_flame{
+		position:absolute;
+		width:80%;
+		z-index:20;
+	}
+}
+//privacy画面の設定
+img.privacy_logo{
+	position:absolute;
+	width:80%;
+	left:10%;
+	filter: alpha(opacity=25);
+  -moz-opacity:0.25;
+  opacity:0.25;
+}

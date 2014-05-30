@@ -1,0 +1,22 @@
+<!-- Workmaterials#new -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">材料　登録</h1>
+<!-- Find me in app/views/workmaterials/new.html.erb -->
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	制作日記　材料　登録
+<% end %>
+
+材料登録フォーム
+<%= form_for([@work,@wkmate]) do |f| %>
+<%= f.label "材料：" %>
+<%= f.text_field :material %><br>
+<%= f.label "数量：" %>
+<%= f.text_field :amount %><br>
+<!-- 作品と材料をひも付け -->
+<%= f.hidden_field :work_id, value: @work.id %>
+<%= hidden_field_tag :redirectURL, @redirectURL %>
+<%= f.submit %>
+<% end %>
+<%= link_to "前のページに戻る", (@redirectURL) %>

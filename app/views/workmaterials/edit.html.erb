@@ -1,0 +1,29 @@
+<!-- Workmaterials#edit -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">材料　修正</h1>
+<!-- Find me in app/views/workmaterials/edit.html.erb -->
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<% if @wkmate.material %>
+		<title>制作日記 <%= @wkmate.material %> 材料 修正</title>
+	<% else %>
+		制作日記　材料　修正
+	<% end %>
+<% end %>
+
+材料登録フォーム
+<%= form_for([@work,@wkmate]) do |f| %>
+<%= f.label "材料：" %>
+<%= @wkmate.material %>
+<%= f.text_field :material %><br>
+<%= f.label "数量：" %>
+<%= @wkmate.amount %>
+<%= f.text_field :amount %><br>
+<!-- 作品と材料をひも付け -->
+<%= f.hidden_field :work_id, value: @work.id %>
+<%= hidden_field_tag :redirectURL, @redirectURL %>
+<%= f.submit %>
+<% end %>
+<%= button_to("材料情報削除", work_workmaterial_path, method: :delete, :confirm => "削除してよろしいですか？") %><br>
+<%= flash[:notice] %>

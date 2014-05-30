@@ -1,0 +1,59 @@
+<div id="shared_header">
+<div id="title_box" class="padding_both_side">
+		<%= image_tag "border_h_fill_bottom/" + sprintf('%02d', rand(17) + 1) + ".png", :class => "border bottom" %>
+		<!--<div id="shared_header" background="shared_header01.jpg">-->
+	<!--<h1>Creator's Guild</h1>-->
+	<%= image_tag 'MasterLogo.png', :alt => "Creater's Guild", :id => "SublogoIcon" %>
+	<div id="login">
+		<% if current_user == nil %>
+			<!-- ユーザ登録画面へ遷移 -->
+			<%= link_to image_tag('registerIcon.gif', {:size => "45x45", :border => 0, :alt => 'ユーザ登録'}),:controller => "users", :action => "new" %>
+			<%= link_to image_tag('logonIcon.gif', {:size => "45x45", :border => 0, :alt => 'ログイン'}), :session_index %>
+		<% else %>
+			<%= link_to image_tag('logoffIcon.gif', {:size => "45x45", :border => 0, :alt => 'ログアウト'}), session_path(current_user.id), :confirm => 'ログアウトしますか？', :method => :delete %>
+		<% end %>
+	</div>
+
+	<!-- 検索窓を実装 -->
+	<div id="search" style="display:none;">
+		<%= form_tag :url => "works#index" do %>
+		<%= text_field_tag :search %>
+		<%= submit_tag "search" %>
+		<% end %>
+	</div>
+	<!-- カテゴリタグリンク -->
+	<!-- 追々カテゴリテーブルを作成して、リンクをカテゴリの種類だけ自動生成する記述に変更 -->
+	<!-- 下のリンクはサンプル -->
+	<div id="cattag" style="display:none;">
+		カテゴリタグ：<%= link_to "test", :url => "works#index", :cat => 'test' %>
+	</div>
+
+	<% if current_user %>
+	<div id="workformbtn"><input type="button" value="" id="workformbutton"></div>
+	<% end %>
+	<!-- ヘッダー用ドロップダウンメニュー -->
+	<div id="openmenu_btn"><%= image_tag "menubtn02.png", :size=>"30x30" %></div>
+	<div id="header_dropmenu">
+		<div id="ideaform">
+			<%= link_to "アイディア一覧", controller: "ideas", action: "index" %>
+			<%= form_for @idea do |f| %>
+				<%= f.label "アイディア投稿：" %>
+				<%= f.text_field :idea %>
+				<%= f.hidden_field :user_id, :value => current_user.id if current_user %>
+				<%= f.submit %>
+			<% end %>
+		</div>
+		<ul>
+			<li><a href="../privacy">サイトポリシー</a></li>
+			<li><a href="mailto:creatersguild2013@gmail.com">お問い合わせ</a></li>
+			<li><a href="../howto">クリギルとは？</a></li>
+		</ul>
+	</div>
+	<!-- #ログイン時のみ作品登録フォーム出現 -->
+	<% if current_user %>
+		<div id="workform">
+		<%= render "workform" %>
+		</div>
+	<% end %>
+</div>
+</div>

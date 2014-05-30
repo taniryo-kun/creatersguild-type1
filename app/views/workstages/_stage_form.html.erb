@@ -1,0 +1,28 @@
+<% if @workstage.errors %>
+	<% @workstage.errors.each do |attribute, message| %>
+		<% if message.is_a?(String) %>
+			<% if attribute == :"start_image.image" %>
+				<span style="color:red"><%= "The image "%></span>
+			<% end %>
+			<span style="color:red"><%= message %></span><br>
+		<% end %>
+	<% end %>
+<% end %>
+<%= form_for([@work,@workstage]) do |f| %>
+  <%= f.label "工程のタイトル：" %><br>
+  <%= f.text_field :stage_title %><br>
+	<%= f.label "工程画像："%><br>
+  <div id="preview"></div>
+  <a href="javascript:void(0)" id="start_trim_edit_button">トリム位置を編集</a>
+  <%= f.fields_for :start_image do |g| %>
+    <%= g.file_field :image %><br>
+    <%= g.hidden_field :image_cache %>
+  <% end %>
+	<%= f.label "今の状況を説明して下さい：" %><br>
+	<%= f.text_area :stage_pr %><br>
+	<!-- 無理矢理stage_numに完了データを運ばせている
+	もっといい方法があれば是非編集して欲しい -->
+	最終工程ならチェックー＞<%= f.check_box :stage_num, {},"finished", "" %><br>
+	<%= f.hidden_field :work_id %>
+	<%= f.submit "create stage" %>
+<% end %>

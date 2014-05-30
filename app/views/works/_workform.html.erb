@@ -1,0 +1,35 @@
+	<% if current_user %>
+	<!-- 新規作品登録フォーム -->
+	<h3>新規作品登録フォーム</h3>
+		<%= form_for @work do |f|%>
+			<% if @work.errors.any? %>
+				<div class="error_messages">
+					<ul>
+						<% for message in @work.errors.full_messages do %>
+							<li><%= message %></li>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
+			<%= f.label "タイトル："%><br>
+			<%= f.text_field :title , :size => "40"%><br>
+			<%= f.label "作品説明："%><br>
+			<%= f.text_area :work_pr , :size => "40*30"%><br>
+			<%= f.label "カテゴリ："%><br>
+			<%= f.select :category_id, @categories.map{|t| [t.category_name, t.id]} %><br>
+			新しいカテゴリ：<br>
+			<%= text_field_tag :newcategory , '',:size => 40 %>
+			<% @work.user_id = current_user.id %><br> <!--ユーザを作成者として設定-->
+			<%= f.hidden_field :start_date %>
+			<%= f.hidden_field :status %>
+			<%= f.hidden_field :user_id %>
+			<%= f.hidden_field :idea_id, value: @idea.id if @idea %>
+			<%= f.submit %>
+		<% end %>
+	<% else %>
+	作品を投稿するためには<br>
+	<%= link_to "ログイン", :session_index %>
+	もしくは
+	<%= link_to "新規会員登録", controller: "users", action: "new" %><br>
+	をお願い致します。
+	<% end %>

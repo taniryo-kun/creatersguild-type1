@@ -1,0 +1,39 @@
+<!-- Knowledges#new -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">参考文献　修正</h1>
+<!-- Find me in app/views/knowledges/edit.html.erb -->
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<% if @knowledge.title %>
+		<title>制作日記 <%= @knowledge.title %> 参考文献 修正</title>
+	<% else %>
+		制作日記　参考文献　修正
+	<% end %>
+<% end %>
+
+ツール情報修正フォーム
+<%= form_for (@knowledge) do |f| %>
+	<div id = "knowledge"
+		<%= f.label "：種類", :class  => 'before' %>
+		<%= @knowledge.section %>
+		<%= f.select :section, [["書籍", "book"], ["ウェブサイト", "web"], :prompt => "選択してください"] %><br>
+		<%= f.label "文献カテゴリ：", :class  => 'before' %>
+		<%= @knowledge.category %>
+		<%= f.select :category, [["未選択", "None"],:prompt => "取り敢えず選択できないように", :disable => true, :class => 'after'] %><br>
+		<%= f.label "文献名称：", :class  => 'before' %>
+		<%= @knowledge.title %>
+		<%= f.text_field :title, :class => 'after' %><br>
+		<%= f.label "ショップリンク：", :class  => 'before' %>
+		<%= @knowledge.product_url %>
+		<%= f.text_field :product_url, :class  => 'after' %><br>
+		<%= f.label "参考作品：", :class => 'before' %>
+		<%= @knowledge.ref_work %>
+		<%= f.text_field :ref_work, :class => 'after' %><br>
+		<%= f.label "文献画像：", :class => 'before' %><br>
+		<%= @knowledge.knowledge_img %><br>
+		<%= f.file_field :knowledge_img %><br>
+		<%= f.hidden_field :knowledge_img_cache %>
+		<%= f.submit %>
+	</div>
+<% end %>

@@ -1,0 +1,41 @@
+<div class="comment user_icon_sets">
+  <div class="left_column above_bordered">
+    <%= render(:partial => 'shared/user_icon/small', :locals => {:user => comment.user}) %>
+  </div>
+  <div class="right_column" onclick="">
+    <div class="user_name_box above_bordered">
+      <% if comment.user%>
+        <%= link_to comment.user.name, comment.user, :target => "_brank" %>
+      <% else%>
+        Nora
+      <% end %>
+      <% if comment.comment_status and  comment.comment_status != "regular"%>
+        <span class="status" <%= comment.comment_status %>>
+          <%= "質問" if comment.comment_status == "question"%>
+          <%= "提案" if comment.comment_status == "suggestion"%>
+        </span>
+      <% end %>
+      <% if comment.point %>
+        <span class="on_image">
+          画像上
+        </span>
+      <% end %>
+    </div>
+    <% if comment.point %>
+      <div class="image_wrap bordered_box <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+        <div class="content">
+          <%= image_tag comment.commentable.start_image.image_url if comment.commentable.start_image %>
+          <div class="marker invert" style="left: <%= comment.point.coordinateX * 100 %>%; top: <%= comment.point.coordinateY * 100 %>%;">
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <p class="body ellipsis multiline expandable noclickevent above_bordered"><!--
+      --><%= comment.comment %><!--
+    --></p>
+    <hr class="hand_drawing">
+    <div class="date">
+      <span class="smallword">Posted: <%= comment.created_at.strftime('%y-%m-%d %H:%M') %></span>
+    </div>
+  </div>
+</div>

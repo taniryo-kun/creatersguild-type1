@@ -1,0 +1,17 @@
+<% if false %>
+  アスペクト比4:3の画像に手描きの枠線をつけるときに使うパーシャル
+  ex.)
+  render(:partial => 'shared/image_4x3/large', :locals => {:src => stage.start_image.image_url, :outer_color => "gray"})
+  引数localsで変数設定。
+    | src         | 必須                | 画像のURL
+    | outer_color | 任意。初期値：white | 枠線外側の色
+    | class_name  | 任意。初期値：""    | 要素に追加するクラス
+<% end %>
+<% outer_color = "white" if not outer_color %>
+<% class_name = class_name + " image_4x3" if class_name%>
+<% class_name = "image_4x3" if not class_name%>
+<span class="<%= class_name %>">
+  <%= image_tag image_path("image_border_4_3/dummy.png"), :class => "dummy" %>
+  <%= image_tag src , :class => "image" %>
+  <%= image_tag image_path("image_border_4_3/" + outer_color + "/" + sprintf('%02d', rand(8) + 1) + ".png"), :class => "frame" %>
+</span>

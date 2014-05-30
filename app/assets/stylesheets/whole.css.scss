@@ -1,0 +1,463 @@
+@import "variables";
+@import "mixins";
+@import "functions";
+/*
+ * 大見出し表現
+ * ※タグ例
+ * <h1 class="band_h padding_both_side">
+ *   見出し文字列
+ * </h1>
+ */
+.band_h{
+  height: 40px;
+  background-color: #{$primary};
+  text-shadow:
+    2px 2px #{$primary},
+    2px -2px #{$primary},
+    -2px 2px #{$primary},
+    -2px -2px #{$primary};
+  color: #fff;
+  font-size: 130%;
+  font-weight: bold;
+  line-height: 40px;
+  background-image:
+    url("/assets/band_h/band_t.png"),
+    url("/assets/band_h/band_b.png"),
+    url("/assets/band_h/band_bg.png");
+  background-size:
+    100% auto,
+    100% auto,
+    100% auto;
+  background-repeat:
+    no-repeat,
+    no-repeat,
+    no-repeat;
+  background-position:
+    left top,
+    left bottom,
+    left center;
+}
+
+/*
+ * 手描き枠線ボタン
+ * ※タグ例
+ * <%= link_to image_tag("文字の左に配置される画像のURL")+"New One!", "リンクのURL", :class => "common_button half_width" %>
+ */
+.common_button{
+  display: inline-block;
+  @include prefixed_property(box-sizing, border-box);
+  //@include prefixed_property(appearance, none);
+  
+  border-style: solid;
+  border-width: 8px 8px 8px 8px;
+  @include prefixed_property(border-image, image-url("button_half_width.png") 15 15 15 15 stretch);
+  
+  //line-height: 40px;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  font-size: large;
+  color: rgb(100%, 100%, 100%);
+  
+  background-color: #{$secondary_a};
+  &:hover{
+    background-color: #{$secondary_a_light};
+  }
+  
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  
+  img{
+    height: 1.2em;
+    vertical-align: middle;
+    margin-right: 0.5em;
+  }
+}
+
+.common_button.half_width{
+  width:50%;
+}
+
+.common_button.flex_width{
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.large_font{
+  font-size: 150%;
+}
+
+.small_font{
+  font-size: x-small;
+}
+
+
+/*
+ * "ellipsis.js.coffee"とセット。
+ * 文字列を、指定横幅からはみ出る場合にトリムするためのスタイル。multiline指定で複数行に渡る文字列の縦幅によるトリムを実行。
+ * ※タグ例
+ * <p class="ellipsis multiline">複数行の文章</p>
+ */
+.ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ellipsis.multiline{
+  white-space: normal;
+}
+.ellipsis.expand{
+  white-space: pre-wrap;
+  display: none;
+}
+.ellipsis.expandable:after{
+  content: "";
+  display: block;
+  height: 1em;
+  background-image: image-url("and_more.png");
+  background-position: right top;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+}
+.ellipsis.expand:after{
+  content: "";
+  display: block;
+  height: 1em;
+  background-image: image-url("collapse.png");
+  background-position: right top;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+}
+
+/*
+ * 手描きの枠線で囲んだ4:3画像用のスタイル
+ * ※タグ例
+ * render(:partial => 'shared/image_4x3/large', :locals => {:src => stage.start_image.image_url, :outer_color => "gray", :class_name => "stage_image"})
+ * ※パーシャル記述箇所
+ * app/views/shared/image_4x3
+ */
+span.image_4x3{
+  display: inline-block;
+  position: relative;
+  >img{
+    vertical-align: text-bottom;
+  }
+  .dummy{
+    width: 100%;
+  }
+  .image{
+    width: 90%;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+  }
+  .frame{
+    width: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+  }
+}
+
+/*
+ * 手描き線で囲ったブロック要素用のスタイル
+ * ※タグ例
+ * <div class="bordered_box <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+ *   内容…
+ * </div>
+ * 
+ * 線の外側の色を灰色に
+ * <div class="bordered_box gray <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+ *   内容…
+ * </div>
+ */
+.bordered_box{
+  position: relative;
+  z-index: 0;
+  &:after{
+    content: "";
+    display: block;
+    border-style: solid;
+    border-width: 48px 63px;
+    @include prefixed_property(border-image, image-url("image_border_4_3/white/01.png") 60 80 stretch);
+    position: absolute;
+    top: -9px;
+    left: -12px;
+    right: -12px;
+    bottom: -9px;
+  }
+  @for $i from 1 through 8 {
+    &.type_0#{$i}{
+      &:after{
+        @include prefixed_property(border-image, image-url("image_border_4_3/white/#{zeropadding($i)}.png") 60 80 stretch);
+      }
+    }
+    &.gray.type_0#{$i}{
+      &:after{
+        @include prefixed_property(border-image, image-url("image_border_4_3/gray/#{zeropadding($i)}.png") 60 80 stretch);
+      }
+    }
+  }
+}
+
+/*
+ * bordered_boxの枠線より上に描画したい要素に付加するスタイル
+ */
+.above_bordered{
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * 手描き線で囲った画像用のスタイル
+ * ※タグ例
+ * <span class="bordered_image <%= serial_string(prefix: "type_", from: 1, to: 8, digit: 2) %>">
+ *   <img src="" />
+ * </span>
+ */
+.bordered_image{
+  @extend .bordered_box;
+  display: inline-block;
+  >img{
+    width: 100%;
+    vertical-align:text-bottom;
+  }
+}
+
+/*
+ * 手描きの水平線（灰色）
+ * ※タグ例
+ * <hr class="hand_drawing">
+ */
+hr.hand_drawing{
+  border: none;
+  background-image: image-url("border_h/01.png");
+  background-size: 100% auto;
+  background-position: left center;
+  background-repeat: no-repeat;
+  height: 10px;
+  margin-top: -5px;
+  margin-bottom: -5px;
+  opacity: 0.7;
+}
+
+
+/*
+ * 「ユーザーアイコン + ユーザー名 + 情報」の場合のレイアウト。
+ * ※タグ例
+ * <div class="user_icon_sets">
+ *   <div class="left_column">
+ *     <%= render(:partial => 'shared/user_icon/small', :locals => {:user => @work.user}) %>
+ *   </div>
+ *   <div class="right_column">
+ *     <div class="user_name_box">
+ *       <%= link_to @work.user.name, @work.user %>
+ *     </div>
+ *     <p id="pr" class="ellipsis multiline expandable"><!--
+ *       --><%= @work.work_pr %><!--
+ *     --></p>
+ *     <hr class="hand_drawing">
+ *   </div>
+ * </div>
+ */
+.user_icon_sets{
+  position: relative;
+  width: 100%;
+  @include prefixed_value(display, box);
+  .left_column{
+    padding-left: 10px;
+    .icon{
+      width: 60px;
+    }
+  }
+  .right_column{
+    @include prefixed_property(box-flex, 1);
+    padding-left: 10px;
+    padding-right: #{$side_padding};
+    .user_name_box{
+      font-weight: bold;
+      font-size: 110%;
+      line-height: 1em;
+      >a{
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+/*
+ * アイコン用レイアウト
+ * ※タグ例
+ * <%= render(:partial => 'shared/user_icon/small', :locals => {:user => アイコンを描画するユーザー}) %>
+ */
+.icon {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  
+  &:before{
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+
+  >*{
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:after{
+    content: "";
+    display: block;
+    border-style: solid;
+    border-width: 10px 10px;
+    @include prefixed_property(border-image, image-url("icon_frame/01.png") 20 20 stretch);
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+  }
+  @for $i from 1 through 10 {
+    &.type_#{zeropadding($i)}{
+      &:after{
+        @include prefixed_property(border-image, image-url("icon_frame/#{zeropadding($i)}.png") 20 20 stretch);
+      }
+    }
+  }
+}
+
+/*
+ * 両サイド決まった幅のパッディング用のクラス
+ */
+.padding_both_side{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/*
+ * シンプルなリスト表示用のスタイル
+ * ※タグ例
+ * <ul class="item_list">
+ *   <li class="headline">材料</li>
+ *   <li>
+ *     <div class="text_left">材料名</div>
+ *     <div class="text_right">所持数</div>
+ *     <div class="clear"></div>
+ *   </li>
+ * </ul>
+ */
+.item_list{
+  position:relative;
+  top:0px;
+  margin-top: 20px;
+  margin-left:10%;
+  margin-right:10%;
+  box-shadow: 0px 0px 5px -2px rgba(231,124,20,0.8);
+  border-radius: 5px;
+  >li{
+    border-bottom: 1px dashed rgba(200,200,200,0.8);
+    padding:5px 5px;
+      >div.text_left{
+        text-align:left;
+        float: left;
+      }
+      >div.text_right{
+        text-align:right;
+      }
+      >div.clear{
+        clear: both;
+      }
+  }
+  >li.headline{
+    padding:5px 5px;
+    font-size: large;
+    font-weight: bold;
+  }
+  >li:last-of-type{
+    border-bottom: none;
+  }
+  a{
+    text-decoration: none;
+  }
+  #additem{
+    display: inline-block;
+    height:20px;
+    width:20px;
+    border-radius: 20px;
+    text-align: center;
+    line-height:20px;
+    font-size:20px;
+    font-weight: bold;
+    color:black;
+    border:1px solid rgba(20,20,20,1.0);
+    a:visited{
+      color:black;
+    }
+  }
+}
+
+/*
+ * ポップアップ用スタイル
+ * ※タグ例
+ * <div id="popup_wrap">
+ *   <div id="popup">
+ *     <div id="">
+ *       ポップアップの内容
+ *     </div>
+ *   </div>
+ * </div>
+ */
+#popup_wrap{
+  background: rgba(0%, 0%, 0%, 0.25);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  >#popup{
+    background: rgba(100%, 100%, 100%, 1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include prefixed_property(transform, translate(-50%,-50%));
+    width: 90%;
+    padding-top:5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    //@include prefixed_property(box-flex, 1);
+    overflow: hidden;
+  }
+  .button_wrap{
+    text-align: right;
+  }
+}
+
+/*
+ * ラインマーカーで線を引いた文字列用のスタイル
+ */
+.under_lined{
+  position: relative;
+  &:before{
+    content: "";
+    position: absolute;
+    top: 0.5em;
+    left: -0.25em;
+    right: -0.25em;
+    bottom: -0em;
+    z-index: -1;
+    border: none;
+    border-radius: 0.5em 100% 100% 0.5em / 0.5em 0.5em 0.5em 1em;
+    @include prefixed_property(transform, skew(15deg));
+    background-color: #{$secondary_a_light};
+  }
+}
+/*SEO対策のためにhtml内に記述してるキーワードを非表示にする*/
+.hidden_space{
+  display: none;
+}

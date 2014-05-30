@@ -1,0 +1,38 @@
+<!-- <h1>Ideas#index</h1> -->
+<!-- <p>Find me in app/views/ideas/index.html.erb</p> -->
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+		<title>制作日記　作品アイディア一覧</title>
+<% end %>
+
+<!-- header -->
+
+<div id="title_box" class="padding_both_side">
+	<%= image_tag "border_h_fill_bottom/" + sprintf('%02d', rand(20) + 1) + ".png", :class => "border bottom" %>
+	<div id="title" class="ellipsis">
+		アイディア一覧
+	</div>
+</div>
+<div id="idea_concept">
+	<span class="small_font">アイディアとは、”一緒にこんなコンセプトで作りたい”や”自分では作れないけど、作って欲しい！”のこと。
+	リクエストに応えるもよし、新しいアイディアを追加するもよし。</span>
+</div><br>
+<div id="ideas_wrapper">
+	<% @ideas.each do |idea| %>
+		<div class="idea_panel">
+		<%= link_to idea.idea, controller: "works", action: "new", data: {idea_id: idea.id, idea: idea.idea} %>
+		<div class="align_right"><%= link_to "作品数：" + IdeaWorkRelation.find_all_by_idea_id(idea.id).length.to_s, idea %></div>
+		</div>
+	<% end %>
+</div>
+<br>
+<div class="form">
+	<%= form_for @newidea do |f| %>
+		<%= f.label "アイディア投稿：" %>
+		<%= f.text_field :idea %>
+		<%= f.hidden_field :user_id, :value => current_user.id if current_user %>
+		<%= f.submit %>
+	<% end %>
+</div>
+
+<%= link_to "TOPへ戻る", :root %>

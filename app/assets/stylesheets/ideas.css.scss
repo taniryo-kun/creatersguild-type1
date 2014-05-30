@@ -1,0 +1,28 @@
+// Place all the styles related to the ideas controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#ideas_wrapper{
+	.idea_panel{
+		padding:3px;
+		width:100%;
+		border-bottom: solid 1px rgba(50,50,50,0.6);
+		margin-bottom: 5px;
+	}
+	.idea_panel:after{
+		content: "";
+		display: block;
+		position:relative;
+		top:3px;
+		width:100%;
+		border-bottom: solid 1px rgba(150,150,150,0.2);
+	}
+	.align_right{
+		display: inline-block;
+		position: absolute;
+		right:0;
+		text-align: right;
+		width:80px;
+		padding-right: 5px;
+	}
+}

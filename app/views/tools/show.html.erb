@@ -1,0 +1,35 @@
+<!-- Tools#show -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">ツール　表示</H1>
+<!-- Find me in app/views/tools/new.html.erb -->
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<% if @tool.title %>
+		<title>制作日記 <%= @tool.title %> ツール 表示</title>
+	<% else %>
+		制作日記　ツール　表示
+	<% end %>
+<% end %>
+
+ツール情報表示フォーム
+<%= form_for (@tool) do |f| %>
+	<div id = "tool">
+		<%= f.label "：種類" %>
+		<%= @tool.section %><br>
+		<%= f.label "ツールカテゴリ：" %>
+		<%= @tool.category %><br>
+		<%= f.label "ツール名称：" %>
+		<%= @tool.title %><br>
+		<%= f.label "ショップリンク：" %>
+		<%= @tool.product_url %><br>
+		<%= f.label "ツール画像" %>
+		<%= image_tag(@tool.tool_image.image_url) if @tool.tool_image %>
+		<%= hidden_field_tag :addEQURL ,@addEQURL %>
+		<%= hidden_field_tag :redirectURL, @redirectURL %>
+	</div>
+<% end %>
+<br><br>
+<%= button_to("ツール情報修正", edit_tool_path, method: :get) %>
+<%= button_to("ツール情報削除", tool_path, :method => :delete, :confirm => "削除してよろしいですか？") %><br>
+<%= link_to("TOPページへ戻る", "/") %>

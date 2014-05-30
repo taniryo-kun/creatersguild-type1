@@ -1,0 +1,191 @@
+ //Place all the styles related to the user controller here.
+// They will automatically be included in application.css.
+// You can use Saas (SCSS) here: http://saas-lang.com/
+@import "variables";
+@import "mixins";
+
+/*ヘッダーの設定*/
+#shared_header{
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:50px;
+	z-index:9999;
+	display:block;
+	background-repeat: no-repeat;
+
+/*	box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.8),inset 0px 0px 30px 20px rgba(255,127,0,1.0);
+*/}
+/*作品登録フォームの設定*/
+#workform{
+	position:relative;
+	top:20px;
+	left:10px;
+	width:85%;
+	padding:10px;
+	display: none;
+	border:2px solid gray;
+	background-color:#F37900;
+	color:black;
+	.error_messages{
+		width:90%;
+	}
+	input[type="text"]{
+		height:28px;
+		width:100%;
+	}
+	input[type="submit"]{
+		margin: 10px 0 5px 0;
+		height: 50px;
+		width: 100%;
+		font-size: 1.5em;
+		display:block;
+		z-index: 9999;	
+	}
+	textarea{
+		width:100%;
+	}
+	&:before,&:after{
+		content: "";
+		position:absolute;
+		height:0;
+		width:0;
+	}
+	&:before{
+		top:-50px;
+		left:10px;
+		border:30px solid transparent;
+		border-bottom: 20px solid gray;	
+	}
+	&:after{
+		top:-41px;
+		left:16px;
+		border:24px solid transparent;
+		border-bottom: 17px solid #fff;
+	}
+}
+
+#workformbtn{
+	position: absolute;
+	height: 45px;
+	width: 45px;
+	top: 0px;
+	left: 50px; 
+	z-index: 9999;
+}
+
+	#workformbutton{
+		height: 45px;
+		width: 45px;
+		background: url(createIcon.gif) left top no-repeat;
+		background-size:100% auto;
+	}
+
+#SublogoIcon{
+	position: relative;
+	height: 60px;
+	width: 60px;
+	top: 0px;
+	left: 43%;
+}
+
+/*ドロップメニューボタン*/
+#openmenu_btn{
+	position:absolute;
+	top:5px;
+	left:5px;
+	height:40px;
+	width:40px;
+	text-align: center;
+	line-height: 40px;
+	color:black;
+	padding: 5px;
+}
+/*ドロップメニュー*/
+#header_dropmenu{
+	display: none;
+	list-style-type: none;
+	width:200px;
+	height:240px;
+	padding:6px;
+	margin-top: 5px;
+	border-radius: 3px;
+	#ideaform{
+		margin-bottom: 5px;
+		input{
+			margin-bottom: 5px;
+		}
+	}
+	li{
+		position:relative;
+		width:94%;
+		margin:4px 0;
+		padding:0 0 0 2px;
+		z-index: 2;
+		border-left:10px solid rgba(243, 121, 0,1.0);
+	}
+	li a{
+		display: block;
+		margin:0;
+		padding: 6px 0;
+		color:#000;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 1;
+		//text-decoration: ;	
+	}
+	li:hover > a{
+		background: #6e7c0c;
+		color: #eff7b1;
+	}
+	>li:hover > a{
+		border-radius: 3px 3px 0 0;
+	}
+}
+
+/*タイトルバー*/
+#title_box{
+	position: relative;
+	color: #fff;
+	background-color: #{$primary};
+	margin-bottom: 10px;
+	height: 50px;
+	#category{
+	  padding-top: 5px;
+	  padding-bottom: 5px;
+	}
+	#title{
+    position: relative;
+    top:5px;
+    left:5px;
+    font-weight: bold;
+    font-size: 140%;
+    padding-bottom: 15px;
+    padding-right: 75px;
+  }
+   #stamps{
+    position:absolute;
+    top:5px;
+    right:13px;
+    z-index:9999;
+    -webkit-transform:rotate(20deg);
+    -moz-transform:rotate(20deg);
+  }
+  .smallword{
+  	position:absolute;
+  	top:0px;
+  	left:5px;
+  }
+  >.border{
+    position: absolute;
+    left: 0px;
+    width: 100%;
+  }
+  >.border.bottom{
+    bottom: 0px;
+    -webkit-transform: translate(0px,45%);
+    -moz-transform: translate(0px,45%);
+    background-color: #{$primary};
+  }
+}

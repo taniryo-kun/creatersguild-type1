@@ -1,0 +1,17 @@
+# coding: utf-8
+<% if @workstage.errors %>
+	<% @workstage.errors.each do |attribute, message| %>
+		<% if message.is_a?(String) %>
+			<span style="color:red"><%= message %></span><br>
+		<% end %>
+	<% end %>
+<% end %>
+<%= form_for([@work,@workstage],:url => {:action => 'update', :method => 'post'}) do |f| %>
+  <%= f.label "工程終了画像：" %><br>
+  <div id="trimmer"></div>
+  <%= f.fields_for :after_image do |g| %>
+    <%= g.file_field :image %><br>
+    <%= g.hidden_field :image_cache %>
+  <% end %>
+	<%= f.submit "register afterimage" %>
+<% end %>

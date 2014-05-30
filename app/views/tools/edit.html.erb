@@ -1,0 +1,38 @@
+<!-- Tools#edit -->
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">ツール　修正</h1>
+<!-- Find me in app/views/tools/edit.html.erb -->
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+	<% if @tool.title %>
+		<title>制作日記 <%= @tool.title %> ツール 修正</title>
+	<% else %>
+		制作日記　ツール　修正
+	<% end %>
+<% end %>
+
+ツール情報修正フォーム
+<%= form_for (@tool) do |f| %>
+	<div id = "tool">
+		<%= f.label "：種類", :class  => 'before' %>
+		<%= @tool.section %>
+		<%= f.select :section, [["ハードウエア", "hare_ware"], ["ソフトウエア", "soft_ware"]] %><br>
+		<%= f.label "ツールカテゴリ：", :class  => 'before' %>
+		<%= @tool.category %>
+		<%= f.select :category, [["未選択", "None"],:disable => true, :class => 'after'] %><br>
+		<%= f.label "ツール名称：", :class  => 'before' %>
+		<%= @tool.title %>
+		<%= f.text_field :title, :class => 'after' %><br>
+		<%= f.label "ショップリンク：", :class  => 'before' %>
+		<%= @tool.product_url %>
+		<%= f.text_field :product_url, :class  => 'after' %><br>
+		<%= f.label "ツール画像：", :class => 'before' %><br>
+		<%= @tool.tool_img %><br>
+		<%= f.file_field :tool_image do |g| %><br>
+			<%= g.file_field :image %><br>
+    		<%= g.hidden_field :image_cache %>
+		<% end %>
+		<%= f.submit %>
+	</div>
+<% end %>

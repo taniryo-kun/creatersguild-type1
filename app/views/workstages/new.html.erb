@@ -1,0 +1,24 @@
+<div id="ws_new_bg">
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1>作品工程　登録</h1>
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+  制作日記　作品工程　登録
+<% end %>
+
+<%= render :partial => "stage_form" %> 
+
+<div id="popup_wrap" style="display:none;">
+  <div id="popup">
+    <div id="trimmer_wrap">
+      <div id="trimmer"></div>
+      <a href="javascript:void(0);" id="trim_edit_cancel">Cancel</a>
+      <a href="javascript:void(0);" id="trim_edit_finish">OK</a>
+    </div>
+  </div>
+</div>
+
+<%= link_to "材料登録ページへ", controller: 'workmaterials', work_id: @work.id, action: 'new', redirectURL: "/works/"+"#{@work.id}"+"/workstages/new" %><br>
+<%= link_to "ツール・文献登録ページへ", controller: "users", id: @work.user.id, action: "addequipment",  redirectURL: "/works/"+"#{@work.id}"+"/workstages/new" %><br>
+</div>

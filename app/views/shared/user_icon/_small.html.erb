@@ -1,0 +1,17 @@
+<% if user != nil && user.usericon != nil %>
+  <%=
+    link_to(
+      image_tag(user.usericon.image_url),
+      user,
+      :class => serial_string(prefix: "icon type_", from: 1, to: 10, digit: 2)
+    )
+  %>
+<% else %>
+  <%=
+    link_to(
+      "",
+      "javascript:alert('にゃーーー');",
+      :class => serial_string(prefix: "icon type_", from: 1, to: 10, digit: 2)
+    )
+  %>
+<% end %>

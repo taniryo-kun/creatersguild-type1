@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  workstage_id: 1
+  knowledge_id: 1
+
+two:
+  workstage_id: 1
+  knowledge_id: 1

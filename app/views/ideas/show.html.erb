@@ -1,0 +1,24 @@
+<div id="title_box" class="padding_both_side">
+	<%= image_tag "border_h_fill_bottom/" + sprintf('%02d', rand(20) + 1) + ".png", :class => "border bottom" %>
+	<div id="title" class="ellipsis">
+		<%= @idea.idea %>の関連作品
+	</div>
+</div>
+
+<div id="users_show"><!-- cssの書き方の関係でこれつけないと適用されないので、暫定的に -->
+<div id="worklist_work_wrapper">
+<% @idea.works.each do |work| %>
+	<div class="workpanel_work_wrapper">
+		<!-- パネル全体をリンク化するためのdiv -->
+		<div class="workpanel_work_image">
+			<%= image_tag work.workstages.last.start_image.image_url, :size=>"100x100" %>
+		</div>
+		<div class="workpanel_work_title padding_both_side">
+			<%= link_to work.title, work, {:class => "ellipsis"} %>
+			<span class="small_font pr ellipsis multiline"><%= work.work_pr %></span>
+			<span class="small_font date">since: <%= work.start_date %></span>
+		</div>
+	</div>
+<% end %>
+</div>
+</div>

@@ -1,0 +1,36 @@
+<!-- h1はapplication.cssで非表示にしてある -->
+<h1 class="hidden_space">作品工程　修正</h1>
+
+<!-- SEO対策としてタイトルを設定 -->
+<% content_for :head do %>
+  <% if @workstage.stage_title %>
+    <title>制作日記 <%= @workstage.stage_title %> 作品工程 修正</title>
+  <% end %>
+<% end %>
+
+<%= render :partial => "stage_form_edit" %> 
+
+<%= form_for([@work,@workstage],:url => {:action => 'update'}) do |f| %>
+    ツール：<br>
+  <% if current_user.tools %>
+    <% current_user.tools.each do |tool| %>
+      <%= f.check_box :tool_ids, { :checked => @workstage.tools.include?(tool), :name => 'workstage[tool_ids][]' }, tool.id, "" %><%= tool.title %><br>
+    <% end %>
+  <% end %>
+    参考文献：<br>
+  <% if current_user.knowledges %>
+    <% current_user.knowledges.each do |knowledge| %>
+      <%= f.check_box :knowledge_ids, { :checked => @workstage.knowledges.include?(knowledge), :name => 'workstage[knowledge_ids][]' }, knowledge.id, "" %><%= knowledge.title %><br>
+    <% end %>
+  <% end %>
+    材料：<br>
+  <% if @work.workmaterials %>
+    <% @work.workmaterials.each do |workmaterial| %>
+      <%= f.check_box :workmaterial_ids, { :checked => @workstage.workmaterials.include?(workmaterial), :name => 'workstage[workmaterial_ids][]' }, workmaterial.id, "" %><%= workmaterial.material %><br>
+    <% end %>
+  <% end %>
+  <%= f.submit "登録" %>
+<% end %>
+
+<%= link_to "材料登録ページへ", controller: 'workmaterials', work_id: @work.id, action: 'new', redirectURL: "/works/"+"#{@work.id}"+"/workstages/"+"#{@workstage.id}"+"/edit" %><br>
+<%= link_to "ツール・文献登録ページへ", controller: "users", id: @work.user.id, action: "addequipment", redirectURL: "/works/"+"#{@work.id}"+"/workstages/"+"#{@workstage.id}"+"/edit" %><br>
